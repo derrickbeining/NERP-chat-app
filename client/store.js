@@ -1,8 +1,8 @@
 import axios from 'axios';
-import { createStore, applyMiddleware } from 'redux';
+import {createStore, applyMiddleware} from 'redux';
 import createLogger from 'redux-logger';
 import thunkMiddleware from 'redux-thunk';
-import { composeWithDevTools } from 'redux-devtools-extension';
+import {composeWithDevTools} from 'redux-devtools-extension';
 import socket from './socket';
 
 // INITIAL STATE
@@ -10,7 +10,9 @@ import socket from './socket';
 const initialState = {
   messages: [],
   name: 'Reggie',
-  newMessageEntry: ''
+  newMessageEntry: '',
+  channels: [],
+  newChannelEntry: '',
 };
 
 // ACTION TYPES
@@ -19,33 +21,57 @@ const UPDATE_NAME = 'UPDATE_NAME';
 const GET_MESSAGE = 'GET_MESSAGE';
 const GET_MESSAGES = 'GET_MESSAGES';
 const WRITE_MESSAGE = 'WRITE_MESSAGE';
+const GET_CHANNELS = 'GET_CHANNELS';
+const GET_CHANNEL = 'GET_CHANNEL';
+const WRITE_CHANNEL = 'WRITE_CHANNEL';
+
 
 // ACTION CREATORS
 
 export function updateName (name) {
-  const action = { type: UPDATE_NAME, name };
+  const action = {type: UPDATE_NAME, name};
   return action;
 }
 
 export function getMessage (message) {
-  const action = { type: GET_MESSAGE, message };
+  const action = {type: GET_MESSAGE, message};
   return action;
 }
 
 export function getMessages (messages) {
-  const action = { type: GET_MESSAGES, messages };
+  const action = {type: GET_MESSAGES, messages};
   return action;
 }
 
+export function getChannels (channels) {
+  return {
+    type: GET_CHANNELS,
+    channels
+  }
+}
+
+export function getChannel (channel) {
+  return {
+    type: GET_CHANNEL,
+    channel
+  }
+}
+
+export function writeChannel (content) {
+  return {
+    type: WRITE_CHANNEL,
+    content
+  }
+}
+
 export function writeMessage (content) {
-  const action = { type: WRITE_MESSAGE, content };
+  const action = {type: WRITE_MESSAGE, content};
   return action;
 }
 
 // THUNK CREATORS
 
 export function fetchMessages () {
-
   return function thunk (dispatch) {
     return axios.get('/api/messages')
       .then(res => res.data)
@@ -57,7 +83,6 @@ export function fetchMessages () {
 }
 
 export function postMessage (message) {
-
   return function thunk (dispatch) {
     return axios.post('/api/messages', message)
       .then(res => res.data)
@@ -67,7 +92,27 @@ export function postMessage (message) {
         socket.emit('new-message', newMessage);
       });
   }
+}
 
+export function fetchChannels () {
+  return function thunk (dispatch) {
+    return axios.get('/api/channels')
+      .then(res => res.data)
+      .then(channels => {
+        const action = getChannels(channels)
+        dispatch(action)
+      })
+  }
+}
+
+export function postChannel (name) {
+  return function thunk (dispatch) {
+    return axios.post('/channels', {name})
+      .then(res => res.data)
+      .then(newChannel => {
+        dispatch(getChannel(newChannel))
+      })
+  }
 }
 
 // REDUCER
@@ -104,6 +149,18 @@ function reducer (state = initialState, action) {
         name: action.name
       };
 
+    case GET_CHANNEL:
+      return {
+        ...state,
+        channels: [ ...state.channels, action.channel ]
+      }
+
+    case GET_CHANNELS:
+      return {
+        ...state,
+        channels: action.channels
+      }
+
     case GET_MESSAGES:
       return {
         ...state,
@@ -113,8 +170,14 @@ function reducer (state = initialState, action) {
     case GET_MESSAGE:
       return {
         ...state,
-        messages: [...state.messages, action.message]
+        messages: [ ...state.messages, action.message ]
       };
+
+    case WRITE_CHANNEL:
+      return {
+        ...state,
+        newChannelEntry: action.contentf
+      }
 
     case WRITE_MESSAGE:
       return {
