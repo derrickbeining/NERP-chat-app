@@ -6,18 +6,19 @@ import NameEntry from './NameEntry';
 export default withRouter(connect(mapStateToProps)(NavBar))
 
 function mapStateToProps ({channels}) {
+  // console.log('channels: ', channels)
   return {channels}
 }
 
-export function NavBar ({channels, match}) {
-  console.log(channels)
+export function NavBar ({location, channels}) {
+  const channelId = +location.pathname.split('/').pop()
   const currentChannel = channels.find(channel => {
-    return channel.id === match.params.channelId
+    return channel.id === channelId
   })
-
+  // console.log(channels)
   return (
     <nav>
-      <h3>#{currentChannel || 'Unnamed'}</h3>
+      <h3>#{currentChannel.name || 'Unnamed'}</h3>
       <NameEntry />
     </nav>
   );

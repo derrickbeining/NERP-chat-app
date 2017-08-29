@@ -2,7 +2,11 @@ import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import {writeChannel, postChannel} from '../store';
 
-export function NewChannelEntry ({newChannelEntry, handleChange, handleSubmit}) {
+export function NewChannelEntry ({
+  newChannelEntry,
+  handleChange,
+  handleSubmit
+}) {
   return (
     <form onSubmit={handleSubmit}>
       <div className="form-group">

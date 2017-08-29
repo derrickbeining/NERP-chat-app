@@ -28,6 +28,7 @@ function ChannelList ({messages, channels}) {
 
 /** Write your `connect` component below! **/
 function mapStateToProps ({channels, messages}) {
+  console.log('channelList channels: ', channels)
   return {
     channels,
     messages
