@@ -105,12 +105,14 @@ export function fetchChannels () {
   }
 }
 
-export function postChannel (name) {
+export function postChannel (channel, history) {
   return function thunk (dispatch) {
-    return axios.post('/channels', {name})
+    return axios.post('/api/channels', channel)
       .then(res => res.data)
       .then(newChannel => {
         dispatch(getChannel(newChannel))
+        socket.emit('new-channel', newChannel)
+        history.push(`/channels/${newChannel.id}`)
       })
   }
 }
@@ -176,7 +178,7 @@ function reducer (state = initialState, action) {
     case WRITE_CHANNEL:
       return {
         ...state,
-        newChannelEntry: action.contentf
+        newChannelEntry: action.content
       }
 
     case WRITE_MESSAGE:

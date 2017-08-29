@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {NavLink} from 'react-router-dom';
+import {NavLink, withRouter} from 'react-router-dom';
 import store from '../store';
 import {connect} from 'react-redux';
 
@@ -37,6 +37,4 @@ function mapStateToProps (state) {
   }
 }
 
-const ChannelListContainer = connect(mapStateToProps)(ChannelList)
-
-export default ChannelListContainer
+export default withRouter(connect(mapStateToProps)(ChannelList))
