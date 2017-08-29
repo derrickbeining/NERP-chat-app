@@ -1,14 +1,24 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
+import {connect} from 'react-redux';
+import {withRouter} from 'react-router-dom'
 import NameEntry from './NameEntry';
 
-export default class Navbar extends Component {
+export default withRouter(connect(mapStateToProps)(NavBar))
 
-  render () {
-    return (
-      <nav>
-        <h3># channelname goes here</h3>
-        <NameEntry />
-      </nav>
-    );
-  }
+function mapStateToProps ({channels}) {
+  return {channels}
+}
+
+export function NavBar ({channels, match}) {
+  console.log(channels)
+  const currentChannel = channels.find(channel => {
+    return channel.id === match.params.channelId
+  })
+
+  return (
+    <nav>
+      <h3>#{currentChannel || 'Unnamed'}</h3>
+      <NameEntry />
+    </nav>
+  );
 }

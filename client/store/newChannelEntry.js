@@ -20,6 +20,7 @@ export function postChannel (channel, history) {
         socket.emit('new-channel', newChannel)
         history.push(`/channels/${newChannel.id}`)
       })
+      .catch(console.error.bind(console))
   }
 }
 

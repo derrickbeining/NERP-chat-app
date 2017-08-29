@@ -15,13 +15,15 @@ import messages from './messages'
 import name from './name'
 import newChannelEntry from './newChannelEntry'
 import newMessageEntry from './newMessageEntry'
+import currentChannel from './currentChannel'
 
 const reducer = combineReducers({
   channels,
   messages,
   name,
   newChannelEntry,
-  newMessageEntry
+  newMessageEntry,
+  currentChannel,
 })
 
 // STORE ///////////////////////////////////
@@ -39,3 +41,4 @@ export * from './messages'
 export * from './name'
 export * from './newChannelEntry'
 export * from './newMessageEntry'
+export * from './currentChannel'

@@ -17,7 +17,8 @@ export function postMessage (message) {
         const action = getMessage(newMessage);
         dispatch(action);
         socket.emit('new-message', newMessage);
-      });
+      })
+      .catch(console.error.bind(console))
   }
 }
 

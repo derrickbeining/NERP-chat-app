@@ -20,7 +20,8 @@ export function fetchMessages () {
       .then(messages => {
         const action = getMessages(messages);
         dispatch(action);
-      });
+      })
+      .catch(console.error.bind(console))
   }
 }
 

@@ -26,6 +26,7 @@ export function fetchChannels () {
         const action = getChannels(channels)
         dispatch(action)
       })
+      .catch(console.error.bind(console))
   }
 }
 

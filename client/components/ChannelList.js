@@ -3,9 +3,6 @@ import {NavLink, withRouter} from 'react-router-dom';
 import store from '../store';
 import {connect} from 'react-redux';
 
-// These values are all hardcoded...for now!
-// Soon, we'll fetch them from the server!
-
 function ChannelList ({messages, channels}) {
   return (
     <ul>
@@ -16,7 +13,7 @@ function ChannelList ({messages, channels}) {
         return (
           <li key={channel.id}>
             <NavLink to={`/channels/${channel.id}`} activeClassName="active">
-              <span># {channel.name}</span>
+              <span>#{channel.name}</span>
               <span className="badge">{numberOfMessages}</span>
             </NavLink>
           </li>
@@ -30,10 +27,18 @@ function ChannelList ({messages, channels}) {
 }
 
 /** Write your `connect` component below! **/
-function mapStateToProps (state) {
+function mapStateToProps ({channels, messages}) {
   return {
-    channels: state.channels,
-    messages: state.messages
+    channels,
+    messages
+  }
+}
+
+function mapDispatchToProps (dispatch) {
+  return {
+    onClick: (event) => {
+
+    }
   }
 }
 
