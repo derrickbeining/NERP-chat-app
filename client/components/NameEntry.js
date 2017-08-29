@@ -1,12 +1,13 @@
-import React, { Component } from 'react';
-import store, { updateName } from '../store';
+import React, {Component} from 'react';
+import store, {updateName} from '../store';
 
 export default class NameEntry extends Component {
 
-  constructor () {
+  constructor() {
     super();
     this.state = store.getState();
     this.handleChange = this.handleChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   componentDidMount () {
@@ -21,9 +22,13 @@ export default class NameEntry extends Component {
     store.dispatch(updateName(evt.target.value));
   }
 
+  handleSubmit (event) {
+    event.preventDefault()
+  }
+
   render () {
     return (
-      <form className="form-inline">
+      <form className="form-inline" onSubmit={this.handleSubmit}>
         <label htmlFor="name">Your name:</label>
         <input
           type="text"
